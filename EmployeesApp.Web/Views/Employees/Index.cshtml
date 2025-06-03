@@ -5,10 +5,10 @@
 }
 
 <ul>
-    @foreach (var employee in Model.EmployeeVMs)
+    @foreach (var employee in Model.EmployeeVMs) 
     {
         <li>
-            <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id" style="color:@(employee.ShowAsHighlighted ? "red" : "inherit");">@employee.Name</a>
+            <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id" style="color:@(employee.ShowAsHighlighted ? "red" : "inherit");">@employee.Name@employee.Company</a>
         </li>
     }
 </ul>

@@ -19,10 +19,10 @@ public class EmployeesControllerTests
         //Arrange
         var employeeService = new Mock<IEmployeeService>();
         employeeService.Setup(service => service.GetAll())
-            .Returns([
-                new Employee{Email = "gmail@gmail.com", Name = "Pär"},
-                new Employee{Email = "email@email.com", Name = "Name"},
-                new Employee{Email = "hotmail@hotmail.com", Name = "Namn"}
+            .ReturnsAsync([
+                new Employee{Email = "gmail@gmail.com", Name = "Pär", Salary = 20000.00},
+                new Employee{Email = "email@email.com", Name = "Name", Salary = 21000.00},
+                new Employee{Email = "hotmail@hotmail.com", Name = "Namn", Salary = 19000.00}
             ]);
         var employeeController = new EmployeesController(employeeService.Object);
 
@@ -35,11 +35,11 @@ public class EmployeesControllerTests
     }
 
     [Theory]
-    [InlineData("other@other.com", "other", 4, true)]
-    public void Create_WithValidViewModel_ReturnsViewResult(string email, string name, int botcheck, bool expected)
+    [InlineData("other@other.com", "other", 20000.00, 4, true)]
+    public void Create_WithValidViewModel_ReturnsViewResult(string email, string name, double salary, int botcheck, bool expected)
     {
         // Arrange
-        var viewModel = new CreateVM { Email = email, Name = name, BotCheck = botcheck };
+        var viewModel = new CreateVM { Email = email, Name = name, Salary = salary, BotCheck = botcheck };
         var mockService = new Mock<IEmployeeService>();
         var controller = new EmployeesController(mockService.Object);
 
@@ -64,15 +64,16 @@ public class EmployeesControllerTests
     }
 
     [Theory]
-    [InlineData("name", "email", 4, false)]
-    [InlineData("name", "email@mail.com", 3, false)]
-    [InlineData("name", "email@mail.com", 4, true)]
-    public void Create_ViewModelValidation(string name, string email, int check, bool expect)
+    [InlineData("name", "email", 20000.00, 4, false)]
+    [InlineData("name", "email@mail.com", 20000.00, 3, false)]
+    [InlineData("name", "email@mail.com", 20000.00, 4, true)]
+    public void Create_ViewModelValidation(string name, string email, double salary, int check, bool expect)
     {
         var model = new CreateVM
         {
             Name = name,
             Email = email,
+            Salary = salary,
             BotCheck = check
         };
 
@@ -97,7 +98,7 @@ public class EmployeesControllerTests
 
         employeeService
             .Setup(service => service.GetById(1))
-            .Returns(employee);
+            .ReturnsAsync(employee);
 
         //Act
         var result = employeeController.Details(1);

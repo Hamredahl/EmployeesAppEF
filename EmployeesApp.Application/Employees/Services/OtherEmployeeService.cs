@@ -5,17 +5,17 @@ namespace EmployeesApp.Application.Employees.Services;
 
 public class OtherEmployeeService(IEmployeeRepository employeeRepository) : IEmployeeService
 {
-    public void Add(Employee employee)
+    public async Task Add(Employee employee)
     {
-        employeeRepository.Add(employee);
+        await employeeRepository.Add(employee);
     }
 
-    public Employee[] GetAll()
+    public Task<Employee[]> GetAll()
     {
         return employeeRepository.GetAll();
     }
 
-    public Employee? GetById(int id) => employeeRepository.GetById(id);
+    public Task<Employee?> GetById(int id) => employeeRepository.GetById(id);
 
     public bool CheckIsVIP(Employee employee) =>
         employee.Email.StartsWith("ADMIN", StringComparison.CurrentCultureIgnoreCase);

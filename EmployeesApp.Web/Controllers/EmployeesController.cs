@@ -3,15 +3,16 @@ using EmployeesApp.Domain.Entities;
 using EmployeesApp.Web.Models;
 using EmployeesApp.Web.Views.Employees;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace EmployeesApp.Web.Controllers;
 
 public class EmployeesController(IEmployeeService service) : Controller
 {
     [HttpGet("")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var model = service.GetAll();
+        var model = await service.GetAll();
 
         var viewModel = new IndexVM()
         {
@@ -20,6 +21,7 @@ public class EmployeesController(IEmployeeService service) : Controller
             {
                 Id = e.Id,
                 Name = e.Name,
+                Company = e.Company == null ? null : $", {e.Company.Name}",
                 ShowAsHighlighted = service.CheckIsVIP(e),
             })]
         };
@@ -35,7 +37,7 @@ public class EmployeesController(IEmployeeService service) : Controller
 
     [HttpPost("create")]
     [ServiceFilter(typeof(MyLogServiceFilterAttribute))]
-    public IActionResult Create(CreateVM viewModel)
+    public async Task<IActionResult> Create(CreateVM viewModel)
     {
         if (!ModelState.IsValid)
             return View();
@@ -44,24 +46,28 @@ public class EmployeesController(IEmployeeService service) : Controller
         {
             Name = viewModel.Name,
             Email = viewModel.Email,
+            Salary = viewModel.Salary
         };
 
-        service.Add(employee);
+        await service.Add(employee);
         return RedirectToAction(nameof(Index));
     }
 
     [HttpGet("details/{id}")]
     [TypeFilter(typeof(MyLogTypeFilterAttribute))]
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        var model = service.GetById(id);
+        var model = await service.GetById(id);
 
         DetailsVM viewModel = new()
         {
             Id = model!.Id,
             Name = model.Name,
             Email = model.Email,
+            Salary = model.Salary,            
+            Company = model.Company?.Name
         };
+        Console.WriteLine(model.Company);
 
         return View(viewModel);
     }

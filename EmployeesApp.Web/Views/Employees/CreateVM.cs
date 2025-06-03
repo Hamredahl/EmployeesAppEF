@@ -14,6 +14,11 @@ namespace EmployeesApp.Web.Views.Employees
         [Required(ErrorMessage = "You must specify an e-mail address")]
         public required string Email { get; set; }
 
+        [Display(Name = "Salary")]
+        [Required(ErrorMessage = "You must specify a salary")]
+        [Range(0.00, Double.MaxValue, ErrorMessage = "Salary must be more than 0")]
+        public required double Salary { get; set; }
+
         [Display(Name = "2 + 2 = ?")]
         [Required(ErrorMessage = "You must answer the question")]
         [Range(4, 4, ErrorMessage = "Wrong answer")]

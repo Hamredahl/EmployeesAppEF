@@ -1,57 +1,27 @@
 ﻿using EmployeesApp.Application.Employees.Interfaces;
 using EmployeesApp.Domain.Entities;
+using EmployeesApp.Infrastructure.Persistance.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeesApp.Infrastructure.Persistance.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository(ApplicationContext context) : IEmployeeRepository
     {
-        readonly List<Employee> employees =
-        [
-            new Employee()
+        public async Task Add(Employee employee)
         {
-            Id = 562,
-            Name = "Anders Hejlsberg",
-            Email = "Anders.Hejlsberg@outlook.com",
-        },
-        new Employee()
-        {
-            Id = 62,
-            Name = "Kathleen Dollard",
-            Email = "k.d@outlook.com",
-        },
-        new Employee()
-        {
-            Id = 15662,
-            Name = "Mads Torgersen",
-            Email = "Admin.Torgersen@outlook.com",
-        },
-        new Employee()
-        {
-            Id = 52,
-            Name = "Scott Hanselman",
-            Email = "s.h@outlook.com",
-        },
-        new Employee()
-        {
-            Id = 563,
-            Name = "Jon Skeet",
-            Email = "j.s@outlook.com",
-        },
-        ];
-
-        public void Add(Employee employee)
-        {
-            employee.Id = employees.Count < 0 ? 1 : employees.Max(e => e.Id) + 1;
-            employees.Add(employee);
+            context.Employees.Add(employee);
+            await context.SaveChangesAsync();
         }
+        public async Task<Employee[]> GetAll() => await context.Employees
+            .Include(e => e.Company)
+            .AsNoTracking()
+            .ToArrayAsync();
 
-        //Classic C# syntax for GetAll()
-        public Employee[] GetAll()
+        public async Task<Employee?> GetById(int id)
         {
-            return [.. employees];
+            var employee = await context.Employees.FindAsync(id);
+            await context.Entry(employee).Reference(c => c.Company).LoadAsync();
+            return employee;
         }
-
-        public Employee? GetById(int id) => employees
-            .SingleOrDefault(e => e.Id == id);
     }
 }
