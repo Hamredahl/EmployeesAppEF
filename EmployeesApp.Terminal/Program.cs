@@ -1,5 +1,6 @@
 ﻿using EmployeesApp.Application.Employees.Services;
 using EmployeesApp.Domain.Entities;
+using EmployeesApp.Infrastructure;
 using EmployeesApp.Infrastructure.Persistance.Contexts;
 using EmployeesApp.Infrastructure.Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,10 @@ public class Program
     {
         DbContextOptionsBuilder<ApplicationContext> builder = new DbContextOptionsBuilder<ApplicationContext>();
         builder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EmployeesAppDB;Trusted_Connection=True;");
-        employeeService = new(new EmployeeRepository(new ApplicationContext(builder.Options)));
-        companyService = new(new CompanyRepository(new ApplicationContext(builder.Options)));
+        ApplicationContext context = new ApplicationContext(builder.Options);
+        EmployeeRepository employeeRepository = new EmployeeRepository(context);
+        employeeService = new(employeeRepository);
+        companyService = new(new UnitOfWork(context, new CompanyRepository(context), employeeRepository, new OfficeRepository(context)));
 
         //ListAllEmployees();
         ListAllCompanies();

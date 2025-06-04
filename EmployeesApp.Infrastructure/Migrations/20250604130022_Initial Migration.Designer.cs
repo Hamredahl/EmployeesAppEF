@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250604075336_added connection for companies for employees")]
-    partial class addedconnectionforcompaniesforemployees
+    [Migration("20250604130022_Initial Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,15 +32,24 @@ namespace EmployeesApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Alfakrull AB"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "BSons & Sons"
+                        });
                 });
 
             modelBuilder.Entity("EmployeesApp.Domain.Entities.Employee", b =>
@@ -75,6 +84,7 @@ namespace EmployeesApp.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            CompanyId = 2,
                             Email = "benk@bsons.com",
                             Name = "Benke Benk",
                             Salary = 20000m
@@ -82,6 +92,7 @@ namespace EmployeesApp.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
+                            CompanyId = 2,
                             Email = "bank@bsons.com",
                             Name = "Banke Bank",
                             Salary = 23000m
@@ -89,9 +100,67 @@ namespace EmployeesApp.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
+                            CompanyId = 2,
                             Email = "bonk@bsons.com",
                             Name = "Bonke Bonk",
                             Salary = 19500m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CompanyId = 1,
+                            Email = "alfons@alfakrull.no",
+                            Name = "Alfons Alfa",
+                            Salary = 43000m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CompanyId = 1,
+                            Email = "albert@alfakrull.no",
+                            Name = "Albert Albort",
+                            Salary = 49000m
+                        });
+                });
+
+            modelBuilder.Entity("EmployeesApp.Domain.Entities.Office", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Offices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Oslo",
+                            CompanyId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Borlänge",
+                            CompanyId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "Bredäng",
+                            CompanyId = 2
                         });
                 });
 
@@ -104,9 +173,20 @@ namespace EmployeesApp.Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("EmployeesApp.Domain.Entities.Office", b =>
+                {
+                    b.HasOne("EmployeesApp.Domain.Entities.Company", "Company")
+                        .WithMany("Offices")
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("EmployeesApp.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Employees");
+
+                    b.Navigation("Offices");
                 });
 #pragma warning restore 612, 618
         }
