@@ -22,12 +22,14 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
             .HasColumnType(SqlDbType.Money.ToString());
 
         modelBuilder.Entity<Employee>().HasData(
-            new Employee { Id = 1, Name = "Benke Benk", Email = "benk@bsons.com", Salary = 20000.00 },
-            new Employee { Id = 2, Name = "Banke Bank", Email = "bank@bsons.com", Salary = 23000.00 },
-            new Employee { Id = 3, Name = "Bonke Bonk", Email = "bonk@bsons.com", Salary = 19500.00 });
+            new Employee { Id = 1, Name = "Benke Benk", Email = "benk@bsons.com", Salary = 20000.00, CompanyId = 2 },
+            new Employee { Id = 2, Name = "Banke Bank", Email = "bank@bsons.com", Salary = 23000.00, CompanyId = 2 },
+            new Employee { Id = 3, Name = "Bonke Bonk", Email = "bonk@bsons.com", Salary = 19500.00, CompanyId = 2 },
+            new Employee { Id = 4, Name = "Alfons Alfa", Email = "alfons@alfakrull.no", Salary = 43000.00, CompanyId = 1 },
+            new Employee { Id = 5, Name = "Albert Albort", Email = "albert@alfakrull.no", Salary = 49000.00, CompanyId = 1 });
 
-        //modelBuilder.Entity<Company>().HasData(
-        //    new Company { Id = 1, Name = "Bsons & sons" },
-        //    new Company { Id = 2, Name = "Alfakrull AB" });
+        modelBuilder.Entity<Company>().HasData(
+            new Company { Id = 1, Name = "Alfakrull AB"},
+            new Company { Id = 2, Name = "BSons & Sons"});
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EmployeesApp.Domain.Entities
 {
-    public class Company
+    public class Office
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public List<Employee>? Employees { get; set; }
-        public List<Office>? Offices { get; set; }
+        public int? CompanyId { get; set; }
+        public Company? Company { get; set; }
     }
 }

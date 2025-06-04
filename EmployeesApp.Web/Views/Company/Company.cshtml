@@ -1,0 +1,15 @@
+﻿@using EmployeesApp.Web.Views.Company
+@model CompanyVM
+
+@{
+    ViewBag.Title = "Company List";
+}
+
+<ul>
+    @foreach (var company in Model.CompaniesVMs)
+    {
+        <li>
+            @company.Name <a asp-controller="Company" asp-action="remove" asp-route-id="@company.Id"><button>List employees in console</button></a>
+        </li>
+    }
+</ul>

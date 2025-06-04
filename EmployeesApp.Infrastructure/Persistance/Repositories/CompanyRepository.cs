@@ -1,0 +1,30 @@
+﻿using EmployeesApp.Application.Employees.Interfaces;
+using EmployeesApp.Domain.Entities;
+using EmployeesApp.Infrastructure.Persistance.Contexts;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmployeesApp.Infrastructure.Persistance.Repositories;
+
+public class CompanyRepository(ApplicationContext context) : ICompanyRepository
+{
+    public async Task<Company[]> GetAllCompanies() => await context.Companies
+        .ToArrayAsync();
+
+    public async Task<Company> GetCompanyById(int id)
+    {
+        var company = await context.Companies.FindAsync(id);
+        await context.Entry(company).Collection(e => e.Employees).LoadAsync(); 
+        return company;
+    }
+    public async Task RemoveCompany(int id)
+    {
+        //Company company = await context.Companies.FindAsync(id);
+        //context.Companies.Remove(company);
+        //await context.SaveChangesAsync();
+    }
+}

@@ -3,6 +3,7 @@ using EmployeesApp.Infrastructure.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250604075336_added connection for companies for employees")]
+    partial class addedconnectionforcompaniesforemployees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,20 +41,6 @@ namespace EmployeesApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "Oslo",
-                            Name = "Alfakrull AB"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "Bredäng",
-                            Name = "BSons & Sons"
-                        });
                 });
 
             modelBuilder.Entity("EmployeesApp.Domain.Entities.Employee", b =>
@@ -86,7 +75,6 @@ namespace EmployeesApp.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CompanyId = 2,
                             Email = "benk@bsons.com",
                             Name = "Benke Benk",
                             Salary = 20000m
@@ -94,7 +82,6 @@ namespace EmployeesApp.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CompanyId = 2,
                             Email = "bank@bsons.com",
                             Name = "Banke Bank",
                             Salary = 23000m
@@ -102,26 +89,9 @@ namespace EmployeesApp.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            CompanyId = 2,
                             Email = "bonk@bsons.com",
                             Name = "Bonke Bonk",
                             Salary = 19500m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CompanyId = 1,
-                            Email = "alfons@alfakrull.no",
-                            Name = "Alfons Alfa",
-                            Salary = 43000m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CompanyId = 1,
-                            Email = "albert@alfakrull.no",
-                            Name = "Albert Albort",
-                            Salary = 49000m
                         });
                 });
 

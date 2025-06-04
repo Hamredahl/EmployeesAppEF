@@ -22,9 +22,10 @@ public class Program
 
         builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+        builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+        builder.Services.AddScoped<ICompanyService, CompanyService>();
 
         builder.Services.AddScoped<MyLogServiceFilterAttribute>();
-
         builder.Services.AddScoped<ApplicationContext>();
 
         var connString = builder.Configuration

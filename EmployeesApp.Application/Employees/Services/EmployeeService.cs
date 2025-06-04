@@ -13,8 +13,7 @@ public class EmployeeService(IEmployeeRepository employeeRepository) : IEmployee
         {
             capName += ToInitalCapital(toCapitalize[i]);
             if (i != toCapitalize.Length - 1) capName += ' ';
-        }
-       
+        }       
         employee.Name = capName;
         employee.Email = employee.Email.ToLower();
         await employeeRepository.Add(employee);
@@ -40,5 +39,5 @@ public class EmployeeService(IEmployeeRepository employeeRepository) : IEmployee
     }
 
     public bool CheckIsVIP(Employee employee) =>
-        employee.Email.StartsWith("ANDERS", StringComparison.CurrentCultureIgnoreCase);
+        employee.Email.StartsWith("ADMIN", StringComparison.CurrentCultureIgnoreCase);
 }

@@ -10,22 +10,25 @@ namespace EmployeesApp.Terminal;
 public class Program
 {
 
-    static EmployeeService employeeService;
+    static EmployeeService employeeService = null!;
+    static CompanyService companyService = null!;
 
     static void Main(string[] args)
     {
         DbContextOptionsBuilder<ApplicationContext> builder = new DbContextOptionsBuilder<ApplicationContext>();
         builder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EmployeesAppDB;Trusted_Connection=True;");
         employeeService = new(new EmployeeRepository(new ApplicationContext(builder.Options)));
+        companyService = new(new CompanyRepository(new ApplicationContext(builder.Options)));
 
-        ListAllEmployees();
-
+        //ListAllEmployees();
+        ListAllCompanies();
         while (true)
         {
             Console.Write("ID to look up: ");
             int id = int.Parse(Console.ReadLine());
             Console.WriteLine();
-            ListEmployee(id);            
+            //ListEmployee(id);
+            ListCompanyEmployees(id);
         }
     }
 
@@ -45,6 +48,33 @@ public class Program
         {
             employee = employeeService.GetById(employeeID).Result;
             Console.WriteLine($"{employee?.Name}: {employee?.Email}");
+            Console.WriteLine("------------------------------");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"EXCEPTION: {e.Message}");
+            Console.WriteLine();
+        }
+    }
+
+    private static void ListAllCompanies()
+    {
+        foreach (var company in companyService.GetAllCompanies().Result)
+            Console.WriteLine($"{company.Name}, ID: {company.Id}");
+
+        Console.WriteLine("------------------------------");
+    }
+
+    private static void ListCompanyEmployees(int companyId)
+    {
+        Company? company;
+        try
+        {
+            company = companyService.GetCompanyById(companyId).Result;
+            foreach (Employee e in company.Employees)
+            {
+                Console.WriteLine($"{e.Name}");
+            }
             Console.WriteLine("------------------------------");
         }
         catch (Exception e)
