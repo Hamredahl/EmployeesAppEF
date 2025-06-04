@@ -22,4 +22,8 @@ public class EmployeeRepository(ApplicationContext context) : IEmployeeRepositor
         await context.Entry(employee).Reference(c => c.Company).LoadAsync();
         return employee;
     }
+    public async Task Delete(Employee employee)
+    {
+        context.Employees.Remove(employee);
+    }
 }

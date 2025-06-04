@@ -7,4 +7,5 @@ public interface IEmployeeRepository
     Task Add(Employee employee);
     Task<Employee[]> GetAll();
     Task<Employee?> GetById(int id);
+    Task Delete(Employee employee);
 }

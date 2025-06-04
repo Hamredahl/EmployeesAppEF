@@ -28,9 +28,7 @@ namespace EmployeesApp.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var model = await service.GetById(id);
-
-
-
+            await service.Delete(model);
             return RedirectToAction(nameof(Company));
         }
     }

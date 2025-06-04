@@ -1,5 +1,6 @@
 using EmployeesApp.Application.Employees.Interfaces;
 using EmployeesApp.Application.Employees.Services;
+using EmployeesApp.Infrastructure;
 using EmployeesApp.Infrastructure.Persistance.Contexts;
 using EmployeesApp.Infrastructure.Persistance.Repositories;
 using EmployeesApp.Web.Models;
@@ -24,6 +25,8 @@ public class Program
         builder.Services.AddScoped<IEmployeeService, EmployeeService>();
         builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
         builder.Services.AddScoped<ICompanyService, CompanyService>();
+        builder.Services.AddScoped<IOfficeRepository, OfficeRepository>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         builder.Services.AddScoped<MyLogServiceFilterAttribute>();
         builder.Services.AddScoped<ApplicationContext>();

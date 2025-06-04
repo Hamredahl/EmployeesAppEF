@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmployeesApp.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace EmployeesApp.Application.Employees.Interfaces
 {
     public interface IOfficeRepository
     {
-        Task RemoveOffice(int id);
+        Task Delete(Office office);
     }
 }

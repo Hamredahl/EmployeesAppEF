@@ -22,10 +22,8 @@ public class CompanyRepository(ApplicationContext context) : ICompanyRepository
         await context.Entry(company).Collection(o => o.Offices).LoadAsync();
         return company;
     }
-    public async Task RemoveCompany(int id)
+    public async Task Delete(Company company)
     {
-        //Company company = await context.Companies.FindAsync(id);
-        //context.Companies.Remove(company);
-        //await context.SaveChangesAsync();
+        context.Companies.Remove(company);
     }
 }

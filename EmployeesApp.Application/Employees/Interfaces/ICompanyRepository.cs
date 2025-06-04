@@ -11,6 +11,6 @@ namespace EmployeesApp.Application.Employees.Interfaces
     {
         Task<Company[]> GetAllCompanies();
         Task<Company> GetCompanyById(int id);
-        Task RemoveCompany(int id);
+        Task Delete(Company company);
     }
 }

@@ -8,26 +8,30 @@ using System.Threading.Tasks;
 
 namespace EmployeesApp.Application.Employees.Services;
 
-public class CompanyService(ICompanyRepository companyRepository) : ICompanyService
+public class CompanyService(IUnitOfWork unitOfWork) : ICompanyService
 {
     public async Task<Company[]> GetAll()
     {
-        return (await companyRepository.
-            GetAllCompanies())
+        return (await unitOfWork.CompanyRepository
+            .GetAllCompanies())
             .OrderBy(c => c.Name)
             .ToArray();
     }
 
     public async Task<Company> GetById(int id)
     {
-        Company? company = await companyRepository.GetCompanyById(id);
+        Company? company = await unitOfWork.CompanyRepository.GetCompanyById(id);
 
         return company is null ?
             throw new ArgumentException($"Invalid parameter value: {id}", nameof(id)) :
             company;
     }
-    public async Task Delete(int id)
+    public async Task Delete(Company company)    
     {
+        foreach(Employee e in company.Employees) await unitOfWork.EmployeeRepository.Delete(e);
+        foreach (Office o in company.Offices) await unitOfWork.OfficeRepository.Delete(o);        
+        await unitOfWork.CompanyRepository.Delete(company);
 
+        await unitOfWork.Save();
     }
 }

@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeesApp.Infrastructure.Persistance.Repositories
 {
-    public class OfficeRepository : IOfficeRepository
+    public class OfficeRepository(ApplicationContext context) : IOfficeRepository
     {
-        public async Task RemoveOffice(int id)
+        public async Task Delete(Office office)
         {
-
+            context.Offices.Remove(office);
         }
     }
 }

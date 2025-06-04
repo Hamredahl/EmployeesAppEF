@@ -9,7 +9,7 @@
     @foreach (var company in Model.CompaniesVMs)
     {
         <li>
-            @company.Name <a asp-controller="Company" asp-action="delete" asp-route-id="@company.Id"><button>List employees in console</button></a>
+            @company.Name <a asp-controller="Company" asp-action="delete" asp-route-id="@company.Id"><button>Delete Company</button></a>
         </li>
     }
 </ul>
