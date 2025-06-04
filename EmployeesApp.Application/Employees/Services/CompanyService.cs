@@ -10,7 +10,7 @@ namespace EmployeesApp.Application.Employees.Services;
 
 public class CompanyService(ICompanyRepository companyRepository) : ICompanyService
 {
-    public async Task<Company[]> GetAllCompanies()
+    public async Task<Company[]> GetAll()
     {
         return (await companyRepository.
             GetAllCompanies())
@@ -18,7 +18,7 @@ public class CompanyService(ICompanyRepository companyRepository) : ICompanyServ
             .ToArray();
     }
 
-    public async Task<Company> GetCompanyById(int id)
+    public async Task<Company> GetById(int id)
     {
         Company? company = await companyRepository.GetCompanyById(id);
 
@@ -26,7 +26,7 @@ public class CompanyService(ICompanyRepository companyRepository) : ICompanyServ
             throw new ArgumentException($"Invalid parameter value: {id}", nameof(id)) :
             company;
     }
-    public async Task RemoveCompany(int id)
+    public async Task Delete(int id)
     {
 
     }

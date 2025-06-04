@@ -13,7 +13,7 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
 {
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Company> Companies { get; set; } = null!;
-
+    public DbSet<Office> Offices { get; set; } = null!;
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -31,5 +31,10 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
         modelBuilder.Entity<Company>().HasData(
             new Company { Id = 1, Name = "Alfakrull AB"},
             new Company { Id = 2, Name = "BSons & Sons"});
+
+        modelBuilder.Entity<Office>().HasData(
+            new Office { Id = 1, City = "Oslo", CompanyId = 1 },
+            new Office { Id = 2, City = "Borlänge", CompanyId = 2 },
+            new Office { Id = 3, City = "Bredäng", CompanyId = 2 });
     }
 }

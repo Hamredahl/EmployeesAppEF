@@ -10,7 +10,7 @@ namespace EmployeesApp.Web.Controllers
         [HttpGet("company")]
         public async Task<IActionResult> Company()
         {
-            var model = await service.GetAllCompanies();
+            var model = await service.GetAll();
             var viewModel = new CompanyVM()
             {
                 CompaniesVMs = model
@@ -24,10 +24,10 @@ namespace EmployeesApp.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpGet("remove/{id}")]
-        public async Task<IActionResult> Remove(int id)
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var model = await service.GetCompanyById(id);
+            var model = await service.GetById(id);
 
 
 

@@ -9,8 +9,8 @@ namespace EmployeesApp.Application.Employees.Interfaces
 {
     public interface ICompanyService
     {
-        Task<Company[]> GetAllCompanies();
-        Task<Company> GetCompanyById(int id);
-        Task RemoveCompany(int id);
+        Task<Company[]> GetAll();
+        Task<Company> GetById(int id);
+        Task Delete(int id);
     }
 }

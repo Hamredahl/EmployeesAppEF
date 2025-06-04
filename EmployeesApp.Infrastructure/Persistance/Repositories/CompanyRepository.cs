@@ -18,7 +18,8 @@ public class CompanyRepository(ApplicationContext context) : ICompanyRepository
     public async Task<Company> GetCompanyById(int id)
     {
         var company = await context.Companies.FindAsync(id);
-        await context.Entry(company).Collection(e => e.Employees).LoadAsync(); 
+        await context.Entry(company).Collection(e => e.Employees).LoadAsync();
+        await context.Entry(company).Collection(o => o.Offices).LoadAsync();
         return company;
     }
     public async Task RemoveCompany(int id)

@@ -59,7 +59,7 @@ public class Program
 
     private static void ListAllCompanies()
     {
-        foreach (var company in companyService.GetAllCompanies().Result)
+        foreach (var company in companyService.GetAll().Result)
             Console.WriteLine($"{company.Name}, ID: {company.Id}");
 
         Console.WriteLine("------------------------------");
@@ -70,10 +70,17 @@ public class Program
         Company? company;
         try
         {
-            company = companyService.GetCompanyById(companyId).Result;
+            company = companyService.GetById(companyId).Result;
+            Console.WriteLine("Employees: ");
             foreach (Employee e in company.Employees)
             {
-                Console.WriteLine($"{e.Name}");
+                Console.WriteLine($"   {e.Name}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Offices: ");
+            foreach (Office o in company.Offices)
+            {
+                Console.WriteLine($"   {o.City}");
             }
             Console.WriteLine("------------------------------");
         }
